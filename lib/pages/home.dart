@@ -37,18 +37,20 @@ class Home extends StatelessWidget {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFF3D47AF),
       drawer: Drawer(
-        child: Column(
-          children: <Widget> [
-            Container(
-              width: double.infinity,
-              color: Color(0x2643C4),
-              child: DrawerHeader(
-                child: Container() //When Auth is ready add the user's name to the header and the user's year
+        child: Container(
+          color: Color(0xFF2643C4),
+          child: Column(
+            children: <Widget> [
+              Container(
+                width: double.infinity,
+                child: DrawerHeader(
+                  child: Container() //When Auth is ready add the user's name to the header and the user's year
+                )
               )
-            )
-          ]
+            ]
+          ),
         )
       ),
       body: SingleChildScrollView(
@@ -61,14 +63,14 @@ class Home extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget> [
                   IconButton(
-                    icon: Icon(Icons.menu, color: Colors.grey[600], size: 30.0),
+                    icon: Icon(Icons.menu, color: Color(0xFFBBC2D8), size: 30.0),
                     onPressed: () {
                       _scaffoldKey.currentState?.openDrawer();
                       print(_scaffoldKey.currentState.toString());
                     },
                   ),
                   IconButton(
-                    icon: Icon(Icons.notifications_outlined, color: Colors.grey[600], size: 30.0),
+                    icon: Icon(Icons.notifications_outlined, color: Color(0xFFBBC2D8), size: 30.0),
                     onPressed: () {}
                   )
                 ]
@@ -84,6 +86,13 @@ class Home extends StatelessWidget {
                   //color: Color()
                 ),
               )
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: screenHeight*0.04, left: screenWidth*0.09),
+              child: Text(
+                'Categories',
+                style: TextStyle(fontSize: 18.0, color: Color(0xFFBBC2D8)),
+              ),
             )
           ]
         )
