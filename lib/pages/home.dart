@@ -87,7 +87,7 @@ class Home extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 32.0,
                   fontWeight: FontWeight.w900,
-                  //color: Color()
+                  color: Colors.white
                 ),
               )
             ),
