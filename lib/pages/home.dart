@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:developer';
+
+import 'package:todo_list/shared/category_cell.dart';
 
 class Home extends StatelessWidget {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -55,6 +58,7 @@ class Home extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget> [
             Padding(
@@ -93,6 +97,23 @@ class Home extends StatelessWidget {
                 'Categories',
                 style: TextStyle(fontSize: 18.0, color: Color(0xFFBBC2D8)),
               ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 0),
+              child: SizedBox(
+                height: screenHeight*0.25,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  children: <Widget> [
+                    SizedBox(width: screenWidth*0.09),
+                    CategoryCell(screenHeight: screenHeight, screenWidth: screenWidth),
+                    CategoryCell(screenHeight: screenHeight, screenWidth: screenWidth),
+                    CategoryCell(screenHeight: screenHeight, screenWidth: screenWidth),
+                    SizedBox(width: screenWidth*0.06)
+                  ],
+                ),
+              ),
             )
           ]
         )
@@ -101,3 +122,4 @@ class Home extends StatelessWidget {
     );
   }
 }
+
