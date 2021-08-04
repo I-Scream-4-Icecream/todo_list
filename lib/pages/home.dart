@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _showMenu(Offset offset, context) async {
     double left = offset.dx;
@@ -36,6 +36,7 @@ class Home extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       drawer: Drawer(
         child: Column(
@@ -62,8 +63,8 @@ class Home extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.menu, color: Colors.grey[600], size: 30.0),
                     onPressed: () {
-                      scaffoldKey.currentState?.openDrawer();
-                      print(scaffoldKey.currentState.toString());
+                      _scaffoldKey.currentState?.openDrawer();
+                      print(_scaffoldKey.currentState.toString());
                     },
                   ),
                   IconButton(
