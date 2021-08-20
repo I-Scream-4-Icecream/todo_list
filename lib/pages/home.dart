@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:developer';
 
 import 'package:todo_list/shared/category_cell.dart';
+import 'package:todo_list/shared/task_cell.dart';
 
 class Home extends StatelessWidget {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -94,8 +95,8 @@ class Home extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: screenHeight*0.04, left: screenWidth*0.09),
               child: Text(
-                'Categories',
-                style: TextStyle(fontSize: 18.0, color: Color(0xFFBBC2D8)),
+                'CATEGORIES',
+                style: TextStyle(fontSize: 14.0, color: Color(0xFFBBC2D8)),
               ),
             ),
             Padding(
@@ -114,7 +115,28 @@ class Home extends StatelessWidget {
                   ],
                 ),
               ),
-            )
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: screenHeight*0.04, left: screenWidth*0.09),
+              child: Text(
+                'TODAY\'S TASKS ',
+                style: TextStyle(fontSize: 14.0, color: Color(0xFFBBC2D8)),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: screenWidth*0.06, left: screenWidth*0.09),
+              child: SizedBox(
+                height: screenHeight*0.5,
+                child: ListView(
+                  shrinkWrap: true,
+                  children: <Widget> [
+                    TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
+                    TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
+                    TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
+                  ],
+                ),
+              ),
+            ),
           ]
         )
       )
