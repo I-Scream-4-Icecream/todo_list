@@ -13,7 +13,7 @@ class TaskCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: screenHeight*0.03, right: screenWidth*0.03),
+      padding: EdgeInsets.only(bottom: screenHeight*0.03, right: screenWidth*0.03),
       child: Container(
         height: screenHeight*0.11,
         decoration: BoxDecoration(

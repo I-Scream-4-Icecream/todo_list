@@ -117,7 +117,7 @@ class Home extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: screenHeight*0.04, left: screenWidth*0.09),
+              padding: EdgeInsets.only(top: screenHeight*0.04, left: screenWidth*0.09, bottom: screenHeight*0.03),
               child: Text(
                 'TODAY\'S TASKS ',
                 style: TextStyle(fontSize: 14.0, color: Color(0xFFBBC2D8)),
@@ -130,6 +130,8 @@ class Home extends StatelessWidget {
                 child: ListView(
                   shrinkWrap: true,
                   children: <Widget> [
+                    TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
+                    TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
                     TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
                     TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
                     TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
