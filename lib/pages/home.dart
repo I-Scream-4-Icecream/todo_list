@@ -43,7 +43,9 @@ class Home extends StatelessWidget {
       key: _scaffoldKey,
       backgroundColor: Color(0xFF3D47AF),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, '/add');
+        },
         backgroundColor: Color(0xFFd103fc),
         child: Container(
           child: Icon(Icons.add_sharp, color: Colors.white),
