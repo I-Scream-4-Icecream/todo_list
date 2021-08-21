@@ -42,6 +42,27 @@ class Home extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Color(0xFF3D47AF),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/add');
+        },
+        backgroundColor: Color(0xFFd103fc),
+        child: Container(
+          child: Icon(Icons.add_sharp, color: Colors.white),
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.all(Radius.circular(100)),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xFFd103fc).withOpacity(0.3),
+                spreadRadius: 4,
+                blurRadius: 3,
+                offset: Offset(3, 5)
+              )
+            ]
+          ),
+        )
+      ),
       drawer: Drawer(
         child: Container(
           color: Color(0xFF2643C4),
@@ -117,14 +138,14 @@ class Home extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: screenHeight*0.04, left: screenWidth*0.09, bottom: screenHeight*0.03),
+              padding: EdgeInsets.only(top: screenHeight*0.01, left: screenWidth*0.09, bottom: screenHeight*0.03),
               child: Text(
                 'TODAY\'S TASKS ',
                 style: TextStyle(fontSize: 14.0, color: Color(0xFFBBC2D8)),
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(right: screenWidth*0.06, left: screenWidth*0.09),
+              padding: EdgeInsets.only(right: screenWidth*0.04, left: screenWidth*0.07),
               child: SizedBox(
                 height: screenHeight*0.5,
                 child: ListView(
