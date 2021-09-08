@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_list/notifiers/states.dart';
 import 'dart:developer';
 
 import 'package:todo_list/shared/category_cell.dart';
@@ -6,6 +8,9 @@ import 'package:todo_list/shared/task_cell.dart';
 
 class Home extends StatelessWidget {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _currentTodo = Provider<Todo>((ref) => throw UnimplementedError());
+
+  get getCurrentTodo => _currentTodo;
 
   void _showMenu(Offset offset, context) async {
     double left = offset.dx;
@@ -148,23 +153,35 @@ class Home extends StatelessWidget {
               padding: EdgeInsets.only(right: screenWidth*0.04, left: screenWidth*0.07),
               child: SizedBox(
                 height: screenHeight*0.5,
-                child: ListView(
-                  shrinkWrap: true,
-                  children: <Widget> [
-                    TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
-                    TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
-                    TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
-                    TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
-                    TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
-                  ],
-                ),
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    return ListView(
+                      shrinkWrap: true,
+                      children: <Widget> [
+                        ...ref.watch(todosProvider).map(
+                          (todo) => ProviderScope(
+                            child: TaskCell(screenHeight, screenWidth, id: todo.id, description: todo.description, currentTodo: _currentTodo),
+                            overrides: [
+                              _currentTodo.overrideWithValue(todo)
+                            ],
+                          )
+                        ).toList()
+                      ],
+                    );
+                  }
+                )
               ),
             ),
           ]
         )
       )
-
     );
   }
 }
+
+                        // TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
+                        // TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
+                        // TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
+                        // TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
+                        // TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
 
