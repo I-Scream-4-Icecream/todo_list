@@ -27,7 +27,7 @@ class AddTodo extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushReplacementNamed(context, '/');
                     },
-                  )
+                  ) 
                 ],
               )
             ),
