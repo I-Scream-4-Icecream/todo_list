@@ -23,6 +23,15 @@ class TodoNotifier extends StateNotifier<List<Todo>> {
   
   final Reader reader;
 
+  void printList(ref) {
+    final todos = ref.watch(todosProvider);
+    for(final todo in todos) {
+      print(todo.id);
+      print(todo.completed);
+      print(todo.description);
+    }
+  }
+
   void add(String description) {
     state = [...state, Todo(description)];
   }
