@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_list/pages/home.dart';
 import 'package:todo_list/notifiers/states.dart';
+import 'package:todo_list/shared/decoration.dart';
 
 class TaskCell extends StatelessWidget {
   TaskCell(
@@ -23,6 +24,8 @@ class TaskCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextDecoration textDecoration = TextDecoration.none;
+
     return Padding(
       padding: EdgeInsets.only(bottom: screenHeight*0.03, right: screenWidth*0.05, left: screenWidth*0.02),
       child: Container(
@@ -35,24 +38,42 @@ class TaskCell extends StatelessWidget {
                 Consumer(
                   builder: (context, ref, child) {
                     final Todo todo = ref.watch(currentTodo);
-                    return Checkbox(
-                      checkColor: Colors.white,
-                      fillColor: MaterialStateProperty.all(Color(0xffd103fc)),
-                      shape: CircleBorder(),
-                      value: todo.completed,
-                      onChanged: (bool? value) {
-                        ref.read(todosProvider.notifier).toggle(todo.id);
-                        ref.read(todosProvider.notifier).printList(ref);
-                      },
+                    return Transform.scale(
+                      scale: 1.5,
+                      child: Checkbox(
+                        checkColor: Colors.white,
+                        fillColor: MaterialStateProperty.all(Color(0xffd103fc)),
+                        shape: CircleBorder(),
+                        value: todo.completed,
+                        onChanged: (bool? value) {
+                          ref.read(todosProvider.notifier).toggle(todo.id);
+                          if(!todo.completed) {
+                            textDecoration = TextDecoration.lineThrough;
+                          }
+                          ref.read(todosProvider.notifier).printList(ref);
+                        },
+                      ),
                     );
                   }
                 ),
-                Text(
-                  description,
-                  style: TextStyle(
-                    color: Color(0xFFbbc2d8),
-                    fontSize: 18.0
-                  ),
+                SizedBox(width: 10.0),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final Todo todo = ref.watch(currentTodo);
+                    if(todo.completed) {
+                      textDecoration = TextDecoration.lineThrough;
+                    } else {
+                      textDecoration = TextDecoration.none;
+                    }
+                    return Text(
+                      description,
+                      style: TextStyle(
+                        color: Color(0xFFbbc2d8),
+                        fontSize: 18.0,
+                        decoration: textDecoration
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -60,27 +81,12 @@ class TaskCell extends StatelessWidget {
         ),
         height: screenHeight*0.11,
         padding: EdgeInsets.only(left: 20, right: 20),
-        decoration: boxDecoration(),
+        decoration: taskDecoration(),
         constraints: BoxConstraints(
           minWidth: 160,
           maxWidth: 210,
         ),
       ),
-    );
-  }
-
-  BoxDecoration boxDecoration() {
-    return BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(20)),
-      color: Color(0xFF0a155a),
-      boxShadow: [
-        BoxShadow(
-          color: Color(0xFF1c347b),
-          spreadRadius: 2,
-          blurRadius: 8,
-          offset: Offset(-2, 4), // changes position of shadow
-        ),
-      ],
     );
   }
 }

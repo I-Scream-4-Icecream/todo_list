@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_list/notifiers/states.dart';
+import 'package:todo_list/shared/decoration.dart';
 
-class AddTask extends StatelessWidget {
-  const AddTask({ Key? key }) : super(key: key);
+class AddTodo extends StatelessWidget {
+  const AddTodo({ Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    final textController = TextEditingController();
+
     return Scaffold(
       backgroundColor: Color(0xFF3d47af),
       body: SingleChildScrollView(
@@ -14,7 +19,20 @@ class AddTask extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget> [
             Padding(
-              padding: EdgeInsets.only(top: screenHeight*0.18, left: screenWidth*0.09),
+              padding: EdgeInsets.only(left: screenWidth*0.04, right: screenWidth*0.04, top: screenHeight*0.06),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back_rounded, color: Color(0xFFBBC2D8), size: 30.0),
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, '/');
+                    },
+                  ) 
+                ],
+              )
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: screenWidth*0.09, top: screenHeight*0.06),
               child: Text(
                 'Add Task',
                 style: TextStyle(
@@ -27,6 +45,7 @@ class AddTask extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: screenHeight*0.06, left: screenWidth*0.09, right: screenWidth*0.09),
               child: TextField(
+                controller: textController,
                 textAlign: TextAlign.left,
                 style: TextStyle(color: Colors.white),
                 cursorWidth: 1,
@@ -47,38 +66,37 @@ class AddTask extends StatelessWidget {
                 ),
               ),
             ),
-            Center(
-              child: InkWell(
-                onTap: () {
-                  print(0);
-                },
-                child: Material(
-                  child: Center(
-                    child: Text(
-                      'Add',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: Colors.white,
-                      ),
-                    ),
+            Consumer(
+              builder: (context, ref, child) {
+                return Center(
+                  child: Material(
+                    elevation: 5.0,
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      onTap: () {
+                        ref.read(todosProvider.notifier).add(textController.text);
+                        ref.read(todosProvider.notifier).printList(ref);
+                      },
+                      child: Ink(
+                        decoration: buttonDecoration(),
+                        height: 50.0,
+                        width: 150,
+                        child: Center(
+                          child: Text(
+                            'Add',
+                            style: TextStyle(
+                              color: Color(0xFFbbc2d8),
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w300
+                            )
+                          )
+                        ),
+                      )
+                    )
                   ),
-                  /*height: screenHeight*0.11,
-                  padding: EdgeInsets.only(left: 20, right: 20),*/
-                  /*decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: Color(0xFFd103fc),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color(0xFFd103fc).withOpacity(0.3),
-                        spreadRadius: 2,
-                        blurRadius: 8,
-                        offset: Offset(-2, 4), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  width: 210*/
-                ),
-              )
+                );
+              }, 
             )
           ],
         ),

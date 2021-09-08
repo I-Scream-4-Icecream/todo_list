@@ -9,7 +9,7 @@ main() async {
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (context) => Home(),
-        '/add': (context) => AddTask(),
+        '/add': (context) => AddTodo(),
       },
     )
   ));
