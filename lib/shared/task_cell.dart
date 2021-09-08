@@ -23,6 +23,8 @@ class TaskCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextDecoration textDecoration = TextDecoration.none;
+
     return Padding(
       padding: EdgeInsets.only(bottom: screenHeight*0.03, right: screenWidth*0.05, left: screenWidth*0.02),
       child: Container(
@@ -35,24 +37,42 @@ class TaskCell extends StatelessWidget {
                 Consumer(
                   builder: (context, ref, child) {
                     final Todo todo = ref.watch(currentTodo);
-                    return Checkbox(
-                      checkColor: Colors.white,
-                      fillColor: MaterialStateProperty.all(Color(0xffd103fc)),
-                      shape: CircleBorder(),
-                      value: todo.completed,
-                      onChanged: (bool? value) {
-                        ref.read(todosProvider.notifier).toggle(todo.id);
-                        ref.read(todosProvider.notifier).printList(ref);
-                      },
+                    return Transform.scale(
+                      scale: 1.5,
+                      child: Checkbox(
+                        checkColor: Colors.white,
+                        fillColor: MaterialStateProperty.all(Color(0xffd103fc)),
+                        shape: CircleBorder(),
+                        value: todo.completed,
+                        onChanged: (bool? value) {
+                          ref.read(todosProvider.notifier).toggle(todo.id);
+                          if(!todo.completed) {
+                            textDecoration = TextDecoration.lineThrough;
+                          }
+                          ref.read(todosProvider.notifier).printList(ref);
+                        },
+                      ),
                     );
                   }
                 ),
-                Text(
-                  description,
-                  style: TextStyle(
-                    color: Color(0xFFbbc2d8),
-                    fontSize: 18.0
-                  ),
+                SizedBox(width: 10.0),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final Todo todo = ref.watch(currentTodo);
+                    if(todo.completed) {
+                      textDecoration = TextDecoration.lineThrough;
+                    } else {
+                      textDecoration = TextDecoration.none;
+                    }
+                    return Text(
+                      description,
+                      style: TextStyle(
+                        color: Color(0xFFbbc2d8),
+                        fontSize: 18.0,
+                        decoration: textDecoration
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
