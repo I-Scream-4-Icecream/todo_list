@@ -137,6 +137,7 @@ class Home extends StatelessWidget {
                     CategoryCell(screenHeight: screenHeight, screenWidth: screenWidth),
                     CategoryCell(screenHeight: screenHeight, screenWidth: screenWidth),
                     CategoryCell(screenHeight: screenHeight, screenWidth: screenWidth),
+                    CategoryCell(screenHeight: screenHeight, screenWidth: screenWidth),
                     SizedBox(width: screenWidth*0.06)
                   ],
                 ),
@@ -178,10 +179,3 @@ class Home extends StatelessWidget {
     );
   }
 }
-
-                        // TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
-                        // TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
-                        // TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
-                        // TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
-                        // TaskCell(screenHeight: screenHeight, screenWidth: screenWidth),
-

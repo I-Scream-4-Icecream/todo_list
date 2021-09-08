@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_list/pages/home.dart';
 import 'package:todo_list/notifiers/states.dart';
+import 'package:todo_list/shared/decoration.dart';
 
 class TaskCell extends StatelessWidget {
   TaskCell(
@@ -80,27 +81,12 @@ class TaskCell extends StatelessWidget {
         ),
         height: screenHeight*0.11,
         padding: EdgeInsets.only(left: 20, right: 20),
-        decoration: boxDecoration(),
+        decoration: taskDecoration(),
         constraints: BoxConstraints(
           minWidth: 160,
           maxWidth: 210,
         ),
       ),
-    );
-  }
-
-  BoxDecoration boxDecoration() {
-    return BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(20)),
-      color: Color(0xFF0a155a),
-      boxShadow: [
-        BoxShadow(
-          color: Color(0xFF1c347b),
-          spreadRadius: 2,
-          blurRadius: 8,
-          offset: Offset(-2, 4), // changes position of shadow
-        ),
-      ],
     );
   }
 }
