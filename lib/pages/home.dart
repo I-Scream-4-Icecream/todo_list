@@ -159,7 +159,7 @@ class Home extends StatelessWidget {
                       children: <Widget> [
                         ...ref.watch(todosProvider).map(
                           (todo) => ProviderScope(
-                            child: TaskCell(screenHeight, screenWidth, id: todo.id, description: todo.description, currentTodo: _currentTodo),
+                            child: TaskCell(screenHeight, screenWidth, id: todo.id, title: todo.title, description: todo.description, currentTodo: _currentTodo),
                             overrides: [
                               _currentTodo.overrideWithValue(todo)
                             ],

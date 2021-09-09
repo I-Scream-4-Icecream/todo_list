@@ -5,8 +5,8 @@ import 'package:meta/meta.dart';
 var _uuid = Uuid();
 
 final _sampleTodos = [
-  Todo('Buy cat food'),
-  Todo('Learn Riverpod')
+  Todo('Buy cat food', 'Buy 3 dry food packages'),
+  Todo('Learn Riverpod', 'Learn riverpod within 2 months')
 ];
 
 final todosProvider = StateNotifierProvider<TodoNotifier, List<Todo>>((ref) {
@@ -27,13 +27,14 @@ class TodoNotifier extends StateNotifier<List<Todo>> {
     final todos = ref.watch(todosProvider);
     for(final todo in todos) {
       print(todo.id);
-      print(todo.completed);
+      print(todo.title);
       print(todo.description);
+      print(todo.completed);
     }
   }
 
-  void add(String description) {
-    state = [...state, Todo(description)];
+  void add(String title, String description) {
+    state = [...state, Todo(title, description)];
   }
 
   void toggle(String id) {
@@ -45,6 +46,7 @@ class TodoNotifier extends StateNotifier<List<Todo>> {
     state = state.map((todo) {
       if(todo.id == id) {
         return Todo(
+          todo.title,
           todo.description,
           id: todo.id,
           completed: !todo.completed
@@ -54,11 +56,12 @@ class TodoNotifier extends StateNotifier<List<Todo>> {
     }).toList();
   }
 
-  void edit({required String id, required String description}) {
+  void edit({required String id, required String description, required String title}) {
     state = [
       for (final todo in state) 
         if (todo.id == id)
           Todo(
+            title,
             description,
             id: todo.id,
             completed: todo.completed,
@@ -76,10 +79,12 @@ class TodoNotifier extends StateNotifier<List<Todo>> {
 @immutable
 class Todo {
   final String id;
+  final String title;
   final String description;
   final bool completed;
 
   Todo(
+    this.title,
     this.description, {
     this.completed = false,
     String? id,

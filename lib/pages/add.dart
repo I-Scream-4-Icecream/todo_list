@@ -10,7 +10,8 @@ class AddTodo extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    final textController = TextEditingController();
+    final titleController = TextEditingController();
+    final descriptionController = TextEditingController();
 
     return Scaffold(
       backgroundColor: Color(0xFF3d47af),
@@ -44,30 +45,8 @@ class AddTodo extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: screenHeight*0.06, left: screenWidth*0.09, right: screenWidth*0.09),
-              child: TextField(
-                controller: textController,
-                textAlign: TextAlign.left,
-                style: TextStyle(color: Colors.white),
-                cursorWidth: 1,
-                maxLength: 16,
-                cursorColor: Color(0xFFBBC2D8),
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(13)),
-                    borderSide: BorderSide(color: Color(0xFFBBC2D8))
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(25)),
-                    borderSide: BorderSide(color: Color(0xFFBBC2D8))
-                  ),
-                  hintText: 'Task Title',
-                  hintStyle: TextStyle(color: Color(0xFFBBC2D8), fontWeight: FontWeight.w100),
-                  counterStyle: TextStyle(color: Color(0xFFBBC2D8))
-                ),
-              ),
-            ),
+            textfield(screenHeight, screenWidth, titleController, label: 'Title'),
+            textfield(screenHeight, screenWidth, descriptionController, label: 'Description', lines: 4, length: 550, topPadding: 0.01),
             Consumer(
               builder: (context, ref, child) {
                 return Center(
@@ -77,19 +56,34 @@ class AddTodo extends StatelessWidget {
                     child: InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(20.0)),
                       onTap: () {
-                        ref.read(todosProvider.notifier).add(textController.text);
-                        textController.clear();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'You task is added successfully.',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w100
-                              )
-                            ),
-                            backgroundColor: Color(0xFF010319),
-                          )
-                        );
+                        if(titleController.text.isNotEmpty && descriptionController.text.isNotEmpty) {
+                          ref.read(todosProvider.notifier).add(titleController.text, descriptionController.text);
+                          titleController.clear();
+                          descriptionController.clear();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'You task is added successfully.',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w100
+                                )
+                              ),
+                              backgroundColor: Color(0xFF0a155a),
+                            )
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'You have to enter data in all the fields.',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w300
+                                )
+                              ),
+                              backgroundColor: Color(0xFF0a155a),
+                            )
+                          );
+                        }
                         ref.read(todosProvider.notifier).printList(ref);
                       },
                       child: Ink(
@@ -116,5 +110,34 @@ class AddTodo extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Padding textfield(double screenHeight, double screenWidth, TextEditingController textController, {int length = 30, int lines = 1, String label = '', double topPadding = 0.06}) {
+    return Padding(
+            padding: EdgeInsets.only(top: screenHeight*topPadding, left: screenWidth*0.09, right: screenWidth*0.09),
+            child: TextField(
+              controller: textController,
+              textAlign: TextAlign.left,
+              style: TextStyle(color: Colors.white),
+              cursorWidth: 1,
+              maxLines: lines,
+              maxLength: length,
+              cursorColor: Color(0xFFBBC2D8),
+              decoration: InputDecoration(
+                labelText: label,
+                labelStyle: TextStyle(color: Color(0xFFBBC2D8), fontWeight: FontWeight.w100),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(13)),
+                  borderSide: BorderSide(color: Color(0xFFBBC2D8))
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(13)),
+                  borderSide: BorderSide(color: Color(0xFFBBC2D8)),
+                ),
+                counterStyle: TextStyle(color: Color(0xFFBBC2D8)),
+              ),
+            ),
+          );
   }
 }
