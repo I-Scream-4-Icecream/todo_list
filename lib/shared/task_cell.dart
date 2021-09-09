@@ -10,6 +10,7 @@ class TaskCell extends StatelessWidget {
     this.screenWidth, {
     required this.id,
     this.description = "",
+    required this.title,
     this.completed = false,
     required this.currentTodo
     }
@@ -18,6 +19,7 @@ class TaskCell extends StatelessWidget {
   final double screenHeight;
   final double screenWidth;
   final String id;
+  final String title;
   final String description;
   final currentTodo;
   bool completed;
@@ -66,7 +68,7 @@ class TaskCell extends StatelessWidget {
                       textDecoration = TextDecoration.none;
                     }
                     return Text(
-                      description,
+                      title,
                       style: TextStyle(
                         color: Color(0xFFbbc2d8),
                         fontSize: 18.0,
