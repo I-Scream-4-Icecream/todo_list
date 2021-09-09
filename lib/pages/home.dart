@@ -4,6 +4,7 @@ import 'package:todo_list/notifiers/states.dart';
 import 'dart:developer';
 
 import 'package:todo_list/shared/category_cell.dart';
+import 'package:todo_list/shared/decoration.dart';
 import 'package:todo_list/shared/task_cell.dart';
 
 class Home extends StatelessWidget {
@@ -100,10 +101,7 @@ class Home extends StatelessWidget {
                       print(_scaffoldKey.currentState.toString());
                     },
                   ),
-                  IconButton(
-                    icon: Icon(Icons.notifications_outlined, color: Color(0xFFBBC2D8), size: 30.0),
-                    onPressed: () {}
-                  )
+                  menuButton()
                 ]
               ),  
             ),
@@ -178,4 +176,6 @@ class Home extends StatelessWidget {
       )
     );
   }
+
+  
 }

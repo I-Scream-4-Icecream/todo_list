@@ -21,13 +21,15 @@ class AddTodo extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: screenWidth*0.04, right: screenWidth*0.04, top: screenHeight*0.06),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
                     icon: Icon(Icons.arrow_back_rounded, color: Color(0xFFBBC2D8), size: 30.0),
                     onPressed: () {
                       Navigator.pushReplacementNamed(context, '/');
                     },
-                  ) 
+                  ),
+                  menuButton()
                 ],
               )
             ),
@@ -76,6 +78,18 @@ class AddTodo extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(20.0)),
                       onTap: () {
                         ref.read(todosProvider.notifier).add(textController.text);
+                        textController.clear();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'You task is added successfully.',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w100
+                              )
+                            ),
+                            backgroundColor: Color(0xFF010319),
+                          )
+                        );
                         ref.read(todosProvider.notifier).printList(ref);
                       },
                       child: Ink(

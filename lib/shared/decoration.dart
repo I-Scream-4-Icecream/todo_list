@@ -28,3 +28,9 @@ BoxDecoration buttonDecoration() {
     ],
   );
 }
+IconButton menuButton() {
+  return IconButton(
+    icon: Icon(Icons.notifications_outlined, color: Color(0xFFBBC2D8), size: 30.0),
+    onPressed: () {}
+  );
+}
