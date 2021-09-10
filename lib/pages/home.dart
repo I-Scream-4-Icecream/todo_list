@@ -1,17 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_list/models/todo.dart';
 import 'package:todo_list/notifiers/states.dart';
+import 'package:todo_list/services/database_services.dart';
 import 'dart:developer';
 
 import 'package:todo_list/shared/category_cell.dart';
 import 'package:todo_list/shared/decoration.dart';
 import 'package:todo_list/shared/task_cell.dart';
 
-class Home extends StatelessWidget {
+class Home extends ConsumerStatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends ConsumerState<Home> {
+
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final DatabaseServices databaseServices = DatabaseServices();
   final _currentTodo = Provider<Todo>((ref) => throw UnimplementedError());
+  static bool didBuild = false;
 
   get getCurrentTodo => _currentTodo;
+
+  @override
+  void initState() {
+    super.initState();
+    if(!didBuild) {
+      databaseServices.todos().then(
+        (value) {
+          ref.watch(todosProvider).addAll(value);
+          setState(() {
+            didBuild = true;
+          });
+        }
+      );
+    }
+  }
 
   void _showMenu(Offset offset, context) async {
     double left = offset.dx;
@@ -40,6 +65,7 @@ class Home extends StatelessWidget {
       ]
     );
   }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -155,11 +181,12 @@ class Home extends StatelessWidget {
                 child: Consumer(
                   builder: (context, ref, child) {
                     return ListView(
-                      shrinkWrap: true,
+                      shrinkWrap: false,
                       children: <Widget> [
                         ...ref.watch(todosProvider).map(
                           (todo) => ProviderScope(
                             child: TaskCell(screenHeight, screenWidth, id: todo.id, title: todo.title, description: todo.description, currentTodo: _currentTodo),
+                            //child: TaskCell(screenHeight, screenWidth, id: '0', title: todo, description: 'none', currentTodo: _currentTodo),
                             overrides: [
                               _currentTodo.overrideWithValue(todo)
                             ],
@@ -176,6 +203,4 @@ class Home extends StatelessWidget {
       )
     );
   }
-
-  
 }

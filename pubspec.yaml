@@ -9,7 +9,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_riverpod: ^1.0.0-dev.2
+  path: ^1.8.0
   riverpod: ^1.0.0-dev.2
+  sqflite: ^2.0.0+4
   uuid: ^3.0.4
 dev_dependencies:
   flutter_test:

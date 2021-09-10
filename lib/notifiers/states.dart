@@ -1,99 +1,98 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
-import 'package:meta/meta.dart';
+import 'package:riverpod/riverpod.dart';
+import 'package:todo_list/models/todo.dart';
+import 'package:todo_list/services/database_services.dart';
 
-var _uuid = Uuid();
-
-final _sampleTodos = [
-  Todo('Buy cat food', 'Buy 3 dry food packages'),
-  Todo('Learn Riverpod', 'Learn riverpod within 2 months')
-];
+List<Todo> todos = [];
 
 final todosProvider = StateNotifierProvider<TodoNotifier, List<Todo>>((ref) {
-  return TodoNotifier(ref.read, _sampleTodos);
-});
-
-final completedProvider = Provider<List<Todo>>((ref) {
-  final todos = ref.watch(todosProvider);
-  return todos.where((todo) => todo.completed).toList();
+  return TodoNotifier(todos);
 });
 
 class TodoNotifier extends StateNotifier<List<Todo>> {
-  TodoNotifier(this.reader, [List<Todo>? state]): super(state ?? <Todo>[]);
+  TodoNotifier(List<Todo> state): super(state);
   
-  final Reader reader;
-
-  void printList(ref) {
-    final todos = ref.watch(todosProvider);
-    for(final todo in todos) {
-      print(todo.id);
-      print(todo.title);
-      print(todo.description);
-      print(todo.completed);
-    }
+  void add(Todo todo) {
+    state = [...state, todo];
+    DatabaseServices().insertTodo(todo);
   }
 
-  void add(String title, String description) {
-    state = [...state, Todo(title, description)];
-  }
-
-  void toggle(String id) {
-    if(reader(settingsProvider).state.deleteOnComplete) {
-      remove(id);
-      return;
-    }
-    
+  void toggle(int id) {
     state = state.map((todo) {
-      if(todo.id == id) {
+      if (todo.id == id) {
         return Todo(
           todo.title,
           todo.description,
-          id: todo.id,
-          completed: !todo.completed
+          completed: todo.completed == 1 ? 0:1,
         );
       }
       return todo;
     }).toList();
+    DatabaseServices().updateTodo(state.firstWhere((todo) => todo.id == id));
   }
 
-  void edit({required String id, required String description, required String title}) {
-    state = [
-      for (final todo in state) 
-        if (todo.id == id)
-          Todo(
-            title,
-            description,
-            id: todo.id,
-            completed: todo.completed,
-          )
-        else
-          todo,
-    ];
-  }
-
-  void remove(String id) {
+  void remove(int id) {
+    DatabaseServices().deleteTodo(id);
     state = state.where((todo) => todo.id != id).toList();
   }
+
+  void printList() {
+    for(Todo todo in state) {
+      print('Todo title: ' + todo.title);
+    }
+  }
 }
+/*import 'dart:convert';
 
-@immutable
-class Todo {
-  final String id;
-  final String title;
-  final String description;
-  final bool completed;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
+import 'package:meta/meta.dart';
 
-  Todo(
-    this.title,
-    this.description, {
-    this.completed = false,
-    String? id,
-  }) : this.id = id ?? _uuid.v4();
+final sharedPrefs = FutureProvider<SharedPreferences>(
+  (_) async => await SharedPreferences.getInstance()
+);
+
+class TodoNotifier extends StateNotifier<List<Todo>> {
+  final SharedPreferences? pref;
+
+  TodoNotifier(this.pref): super(pref?.getStringList('todos') as List<Todo>);  
+
+  static final provider = StateNotifierProvider<TodoNotifier, List<Todo>>((ref) {
+    final pref = ref.watch(sharedPrefs).maybeWhen(
+      data: (value) => value,
+      orElse: () => null
+    );
+    return TodoNotifier(pref);
+  });
+
+  void saveItem(WidgetRef ref, Todo todo) {
+    SharedPreferences? pref = ref.read(provider.notifier).pref;
+    state = [...state, todo];
+    print(state);
+    List<String> jsonList = List.empty();
+    for(var i in state) {
+      jsonList.add(i.toJson());
+    }
+    pref!.setStringList('todos', jsonList);
+    print(pref.getStringList('todos'));
+  }
+
+  void getData(String id) {
+    if(state.contains(id)) {
+      state = state.where((todo) => todo.id != id).toList();
+    } else {
+      state = [...state, ];
+    }
+    pref!.setStringList(key, state);
+  }
+
+  void printList(WidgetRef ref) {
+    for(String todo in state) {
+      print('Todo title: ' + todo);
+    }
+  }
+
 }
-
-final settingsProvider = StateProvider<Settings>((ref) {
-  return Settings();
-});
 
 @immutable
 class Settings {
@@ -101,3 +100,6 @@ class Settings {
 
   Settings({this.deleteOnComplete = false});
 }
+final settingsProvider = StateProvider<Settings>((ref) {
+  return Settings();
+});*/

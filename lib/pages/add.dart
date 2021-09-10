@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_list/models/todo.dart';
 import 'package:todo_list/notifiers/states.dart';
 import 'package:todo_list/shared/decoration.dart';
 
@@ -57,9 +58,12 @@ class AddTodo extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(20.0)),
                       onTap: () {
                         if(titleController.text.isNotEmpty && descriptionController.text.isNotEmpty) {
-                          ref.read(todosProvider.notifier).add(titleController.text, descriptionController.text);
+                          Todo todo = Todo(titleController.text, descriptionController.text);
+                          ref.read(todosProvider.notifier).add(todo);
+                          
                           titleController.clear();
                           descriptionController.clear();
+                          
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
@@ -84,7 +88,7 @@ class AddTodo extends StatelessWidget {
                             )
                           );
                         }
-                        ref.read(todosProvider.notifier).printList(ref);
+                        ref.read(todosProvider.notifier).printList();
                       },
                       child: Ink(
                         decoration: buttonDecoration(),
@@ -114,30 +118,30 @@ class AddTodo extends StatelessWidget {
 
   Padding textfield(double screenHeight, double screenWidth, TextEditingController textController, {int length = 30, int lines = 1, String label = '', double topPadding = 0.06}) {
     return Padding(
-            padding: EdgeInsets.only(top: screenHeight*topPadding, left: screenWidth*0.09, right: screenWidth*0.09),
-            child: TextField(
-              controller: textController,
-              textAlign: TextAlign.left,
-              style: TextStyle(color: Colors.white),
-              cursorWidth: 1,
-              maxLines: lines,
-              maxLength: length,
-              cursorColor: Color(0xFFBBC2D8),
-              decoration: InputDecoration(
-                labelText: label,
-                labelStyle: TextStyle(color: Color(0xFFBBC2D8), fontWeight: FontWeight.w100),
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(13)),
-                  borderSide: BorderSide(color: Color(0xFFBBC2D8))
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(13)),
-                  borderSide: BorderSide(color: Color(0xFFBBC2D8)),
-                ),
-                counterStyle: TextStyle(color: Color(0xFFBBC2D8)),
-              ),
-            ),
-          );
+      padding: EdgeInsets.only(top: screenHeight*topPadding, left: screenWidth*0.09, right: screenWidth*0.09),
+      child: TextField(
+        controller: textController,
+        textAlign: TextAlign.left,
+        style: TextStyle(color: Colors.white),
+        cursorWidth: 1,
+        maxLines: lines,
+        maxLength: length,
+        cursorColor: Color(0xFFBBC2D8),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(color: Color(0xFFBBC2D8), fontWeight: FontWeight.w100),
+          floatingLabelBehavior: FloatingLabelBehavior.never,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(13)),
+            borderSide: BorderSide(color: Color(0xFFBBC2D8))
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(13)),
+            borderSide: BorderSide(color: Color(0xFFBBC2D8)),
+          ),
+          counterStyle: TextStyle(color: Color(0xFFBBC2D8)),
+        ),
+      ),
+    );
   }
 }

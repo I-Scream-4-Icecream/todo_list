@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_list/models/todo.dart';
 import 'package:todo_list/pages/home.dart';
 import 'package:todo_list/notifiers/states.dart';
 import 'package:todo_list/shared/decoration.dart';
@@ -11,14 +12,14 @@ class TaskCell extends StatelessWidget {
     required this.id,
     this.description = "",
     required this.title,
+    required this.currentTodo,
     this.completed = false,
-    required this.currentTodo
     }
   );
 
   final double screenHeight;
   final double screenWidth;
-  final String id;
+  final int id;
   final String title;
   final String description;
   final currentTodo;
@@ -46,13 +47,14 @@ class TaskCell extends StatelessWidget {
                         checkColor: Colors.white,
                         fillColor: MaterialStateProperty.all(Color(0xffd103fc)),
                         shape: CircleBorder(),
-                        value: todo.completed,
+                        value: (todo.completed == 0) ? false:true,
                         onChanged: (bool? value) {
+                          // create a toggle function when you finish testing
                           ref.read(todosProvider.notifier).toggle(todo.id);
-                          if(!todo.completed) {
+                          if(todo.completed == 1) {
                             textDecoration = TextDecoration.lineThrough;
                           }
-                          ref.read(todosProvider.notifier).printList(ref);
+                          ref.read(todosProvider.notifier).printList();
                         },
                       ),
                     );
@@ -62,13 +64,13 @@ class TaskCell extends StatelessWidget {
                 Consumer(
                   builder: (context, ref, child) {
                     final Todo todo = ref.watch(currentTodo);
-                    if(todo.completed) {
+                    if(todo.completed == 1) {
                       textDecoration = TextDecoration.lineThrough;
                     } else {
                       textDecoration = TextDecoration.none;
                     }
                     return Text(
-                      title,
+                      todo.title,
                       style: TextStyle(
                         color: Color(0xFFbbc2d8),
                         fontSize: 18.0,
